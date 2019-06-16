@@ -1,13 +1,25 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
-class Home extends Component {
+
+class HomePage extends Component {
+
     render() {
+        const { user } = this.props.auth.user;
         return (
             <div>
-                Home
+                Welcome, {user.name}
             </div>
         )
     }
 }
 
-export { Home }
+const mapStateToProps = state => {
+    return {
+      auth: state.auth
+    }
+  }
+
+  const Home = connect(mapStateToProps)(HomePage)
+
+  export { Home }

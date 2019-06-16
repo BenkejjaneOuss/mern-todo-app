@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { logoutUser } from "../actions";
 import {
   Collapse,
   Navbar,
@@ -6,13 +8,10 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem } from 'reactstrap';
+  NavLink } from 'reactstrap';
 
-class NavBar extends Component {
+
+class NavBarComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -21,10 +20,39 @@ class NavBar extends Component {
       isOpen: false
     };
   }
+
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
     });
+  }
+
+  onLogoutClick = e => {
+    e.preventDefault();
+    this.props.logoutUser();
+  };
+
+  _isLoginOrLogout() {
+    if(this.props.isAuth) {
+      return ( 
+        <Nav className="ml-auto" navbar>
+          <NavItem>
+            <NavLink href="" onClick={this.onLogoutClick}>Logout</NavLink>
+          </NavItem>
+        </Nav>
+      )
+    }
+
+    return (
+      <Nav className="ml-auto" navbar>
+        <NavItem>
+          <NavLink href="/login">Login</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="/register">Register</NavLink>
+        </NavItem>
+      </Nav>
+    )
   }
   render() {
     return (
@@ -33,16 +61,22 @@ class NavBar extends Component {
           <NavbarBrand href="/">MERN Todo App</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
-              <NavItem>
-                <NavLink href="/login">Login</NavLink>
-              </NavItem>
-            </Nav>
+            
+            {this._isLoginOrLogout()}
+            
           </Collapse>
         </Navbar>
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    isAuth: state.auth.isAuth,
+    profile: state.auth.profile
+  }
+}
+const NavBar = connect(mapStateToProps, { logoutUser })(NavBarComponent)
 
 export { NavBar }
