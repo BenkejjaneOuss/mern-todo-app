@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
 import { Button, FormGroup, Input, FormFeedback, Spinner, Alert } from 'reactstrap';
 import './login.css'
-import logo from './logo.png';
+import logo from '../logo.png';
 import { Formik } from 'formik'
-import * as yup from 'yup';
+import * as Yup from 'yup';
 import { Link } from 'react-router-dom'
 
 import { connect } from 'react-redux'
-import { signInAction } from "../actions";
+import { signInAction } from "../../actions";
 
 class LoginPage extends Component {
   
   componentDidMount() {
     // If logged in and user navigates to Login page, should redirect them to dashboard
+    console.log(this.props)
     if (this.props.isAuth) {
       this.props.history.push("/");
     }
@@ -29,16 +30,19 @@ class LoginPage extends Component {
   }
 
   _renderButton() {
-    if(this.props.attempting){
+    if(this.props.loading){
       return (<Spinner size="sm" color="light" />)
     }
 
     return("Log In")
   }
 
-  _errorMsg() {
+  _errorOrSuccessMsg() {
     if(this.props.error){
       return (<Alert color="danger">{this.props.error}</Alert>)
+    }else if (this.props.isRegister){
+
+      return (<Alert color="success">You have been successfully registered!</Alert>)
     }
   }
 
@@ -51,14 +55,14 @@ class LoginPage extends Component {
             <img src={logo} id="icon" alt="User Icon" />
             <h1>Todo App</h1>
           </div>
-          { this._errorMsg() }
+          { this._errorOrSuccessMsg() }
           <Formik 
             initialValues = {{ email: '', password: ''}}
             onSubmit = { this._handleFormSubmit.bind(this)}
             validationSchema = {
-              yup.object().shape({
-                email: yup.string().required().email(),
-                password: yup.string().required().min(6)
+              Yup.object().shape({
+                email: Yup.string().required().email(),
+                password: Yup.string().required().min(6)
               })
             }
             render = {({
@@ -100,9 +104,10 @@ class LoginPage extends Component {
 
 const mapStateToProps = state => {
   return {
-    attempting : state.auth.attempting,
+    loading : state.auth.loading,
     error: state.auth.error,
-    isAuth: state.auth.isAuth
+    isAuth: state.auth.isAuth,
+    isRegister: state.auth.isRegister
   }
 }
 

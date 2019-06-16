@@ -4,6 +4,31 @@ import jwt_decode from "jwt-decode";
 
 const TOKEN_NAME = 'mern_todo_app_token'
 
+export const signUpAction = (userData, history) => {
+    return async dispatch => {
+        dispatch(setUserLoading())
+        await axios.post("/user/register", userData)
+            .then(res => {
+                if(res.data.success) {
+                    dispatch(setNewUser());
+                    //history.push("/login");
+                }else{
+                    dispatch({ 
+                        type: 'AUTH_FAILED', 
+                        errorMsg: res.data.message
+                    })
+                }
+                //history.push("/login")
+            }) // re-direct to login on successful register
+            .catch(err =>
+                dispatch({ 
+                    type: 'AUTH_FAILED', 
+                    errorMsg: 'Error, please try again' 
+                })
+            );
+    };
+}
+
 export const signInAction = request_data => {
     return async dispatch => {
 
@@ -37,7 +62,6 @@ export const signInAction = request_data => {
 }
 
 
-
 export const setCurrentUser = decoded => {
     return {
       type: 'AUTH_SUCCESS',
@@ -48,6 +72,12 @@ export const setCurrentUser = decoded => {
 export const setUserLoading = () => {
     return {
       type: 'AUTH_LOADING'
+    };
+};
+
+export const setNewUser = () => {
+    return {
+      type: 'AUTH_REGISTER_SUCCESS'
     };
 };
 
