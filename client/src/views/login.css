@@ -250,3 +250,7 @@ html {
     color: white;
   }
   
+  .taskCompleted {
+    text-decoration: line-through;
+    color: green;
+  }

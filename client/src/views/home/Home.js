@@ -1,19 +1,25 @@
 import React, { Component } from 'react'
-//import { connect } from 'react-redux'
 import { Table, Container, Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { fetchTasks } from '../../actions'
 
 class HomePage extends Component {
-
+    componentDidMount() {
+        this.props.fetchTasks()
+    }
     render() {
-        //const { user } = this.props.auth.user;
+
+        const {  tasks } = this.props;
+
         return (
+
             <div className="align-middle">
                 <Container className="mt-4">
                     <div style={{ margin : '4rem 0' }}>
                         <h1 className="fadeIn first">My Task List </h1>
                         <div>
-                            <Link to="/add-task" className="fadeIn second float-right"><Button type="button" color="primary"  >dzd</Button></Link>
+                            <Link to="/add-task" className="fadeIn second float-right"><Button type="button" color="primary"  >Add Task</Button></Link>
                             
                         </div>
                     </div>
@@ -22,31 +28,19 @@ class HomePage extends Component {
                         <tr>
                             <th>#</th>
                             <th>Task Name</th>
-                            <th>Description</th>
                             <th>Completed</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>Otto</td>
-                            <td><Button color="primary" outline size="sm" className="mr-2" >Edit</Button><Button outline color="danger" size="sm" >Delete</Button></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
+                        {tasks.map((item, index) =>                 
+                            <tr className={item.done ? 'taskCompleted' : null} key={item._id} > 
+                                <th scope="row" >{index+1}</th>
+                                <td >{item.name}</td>
+                                <td >{item.done ? 'Yes' : 'No'}</td>
+                                <td><Button color="primary" outline size="sm" className="mr-2" >Edit</Button><Button outline color="danger" size="sm" >Delete</Button></td>
+                            </tr>
+                        )}
                         </tbody>
                     </Table>
                 </Container>
@@ -54,7 +48,12 @@ class HomePage extends Component {
         )
     }
 }
+const mapStateToProps = state => {
+    return {
+        tasks : state.task.tasks
+    }
+}
 
-  const Home = HomePage
+const Home = connect(mapStateToProps, { fetchTasks })(HomePage)
 
-  export { Home }
+export { Home }

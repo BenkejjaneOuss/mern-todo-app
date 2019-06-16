@@ -1,21 +1,40 @@
 import axios from 'axios'
-import setAuthToken from "../utils/setAuthToken";
-import jwt_decode from "jwt-decode";
 
-export const saveTaskAction = ({ name, done }, history) => {
+export const saveTaskAction = (taskData, history) => {
     return async dispatch => {
         dispatch(setTaskLoading())
         //console.log(userData)
-        const token = localStorage.mern_todo_app_token;
-        setAuthToken(token);
-        // Decode token and get user info and exp
-        const decoded = jwt_decode(token);
-        const owner = decoded.user._id
-        await axios.post("/task/add", {name, done, owner})
+        await axios.post("/task/add", taskData)
             .then(res => {
                 if(res.data.success) {
                     //history.push("/login");
                     dispatch(setNewTask());
+                }else{
+                    dispatch({ 
+                        type: 'TASK_FAILED', 
+                        errorMsg: res.data.message
+                    })        
+                }
+                //history.push("/login")
+            }) // re-direct to login on successful register
+            .catch(err =>
+                dispatch({ 
+                    type: 'TASK_FAILED', 
+                    errorMsg: 'Error, please try again' 
+                })
+            );
+    };
+}
+
+export const fetchTasks = (history) => {
+    return async dispatch => {
+        //dispatch(setTaskLoading())
+        //dispatch({ type: 'FETCHING_TASKS' });
+        await axios.post("/task/list")
+            .then(res => {
+                if(res.data.success) {
+                    //history.push("/login");
+                    dispatch({ type: 'FETCHED_SUCCESS', payload: res.data.tasks });
                 }else{
                     dispatch({ 
                         type: 'TASK_FAILED', 
