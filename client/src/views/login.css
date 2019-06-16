@@ -81,7 +81,7 @@ html {
   
   /* FORM TYPOGRAPHY*/
   
-  input[type=button], input[type=submit], input[type=reset], Button  {
+  button[type=submit], button[type=button] {
     background-color: #56baed;
     border: none;
     color: white;
@@ -95,7 +95,7 @@ html {
     box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
     -webkit-border-radius: 5px 5px 5px 5px;
     border-radius: 5px 5px 5px 5px;
-    margin: 5px 20px 40px 20px;
+    margin: 5px 0 40px 0;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
@@ -103,11 +103,11 @@ html {
     transition: all 0.3s ease-in-out;
   }
   
-  input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover , Button:hover  {
+  button[type=button]:hover, button[type=submit]:hover {
     background-color: #39ace7;
   }
   
-  input[type=button]:active, input[type=submit]:active, input[type=reset]:active, Button:active  {
+  button[type=button]:active, button[type=submit]:active {
     -moz-transform: scale(0.95);
     -webkit-transform: scale(0.95);
     -o-transform: scale(0.95);
@@ -229,7 +229,7 @@ html {
   }
   
   h1{
-      color:#007BFF;
+      color:#56baed;
   }
   
   /* OTHERS */
@@ -243,5 +243,10 @@ html {
   }
   .invalid-feedback {
     text-align: left;
+  }
+
+  .navbar {
+    background-color: #2c3e50;
+    color: white;
   }
   

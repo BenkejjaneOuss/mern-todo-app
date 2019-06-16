@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, FormGroup, Input, FormFeedback, Alert, Spinner } from 'reactstrap';
 import { Link } from 'react-router-dom'
-import './login.css'
+//import './login.css'
 import logo from '../logo.png';
 import { Formik } from 'formik'
 import * as Yup from 'yup';
@@ -17,7 +17,7 @@ class RegisterPage extends Component {
   }
 
   componentDidUpdate() {
-    if(this.props.isRegister){
+    if(this.props.isRegistred){
       this.props.history.push("/login");
     }
   }
@@ -114,7 +114,7 @@ const mapStateToProps = state => {
     loading : state.auth.loading,
     error: state.auth.error,
     isAuth: state.auth.isAuth,
-    isRegister: state.auth.isRegister
+    isRegistred: state.auth.isRegistred
   }
 }
 const Register = connect(mapStateToProps, { signUpAction })(RegisterPage)

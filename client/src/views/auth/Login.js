@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, FormGroup, Input, FormFeedback, Spinner, Alert } from 'reactstrap';
-import './login.css'
+//import './login.css'
 import logo from '../logo.png';
 import { Formik } from 'formik'
 import * as Yup from 'yup';
@@ -13,7 +13,6 @@ class LoginPage extends Component {
   
   componentDidMount() {
     // If logged in and user navigates to Login page, should redirect them to dashboard
-    console.log(this.props)
     if (this.props.isAuth) {
       this.props.history.push("/");
     }
@@ -40,7 +39,7 @@ class LoginPage extends Component {
   _errorOrSuccessMsg() {
     if(this.props.error){
       return (<Alert color="danger">{this.props.error}</Alert>)
-    }else if (this.props.isRegister){
+    }else if (this.props.isRegistred){
 
       return (<Alert color="success">You have been successfully registered!</Alert>)
     }
@@ -89,7 +88,7 @@ class LoginPage extends Component {
                 </FormGroup>
                 <FormGroup>
                     
-                <Button color="primary" className="fadeIn fourth" onClick={handleSubmit} >{this._renderButton()}</Button>
+                <Button type="submit" color="primary" className="fadeIn fourth" onClick={handleSubmit} >{this._renderButton()}</Button>
 
                 </FormGroup>
               </div>
@@ -107,7 +106,7 @@ const mapStateToProps = state => {
     loading : state.auth.loading,
     error: state.auth.error,
     isAuth: state.auth.isAuth,
-    isRegister: state.auth.isRegister
+    isRegistred: state.auth.isRegistred
   }
 }
 

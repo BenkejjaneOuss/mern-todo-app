@@ -8,7 +8,8 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink } from 'reactstrap';
+  NavLink,
+  Container } from 'reactstrap';
 
 
 class NavBarComponent extends Component {
@@ -57,7 +58,9 @@ class NavBarComponent extends Component {
   render() {
     return (
       <div>
-        <Navbar color="dark" dark expand="md">
+        <Navbar className="navbar" dark expand="md">
+          <Container>
+
           <NavbarBrand href="/">MERN Todo App</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
@@ -65,6 +68,7 @@ class NavBarComponent extends Component {
             {this._isLoginOrLogout()}
             
           </Collapse>
+          </Container>
         </Navbar>
       </div>
     );
